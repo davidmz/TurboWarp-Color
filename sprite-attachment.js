@@ -35,6 +35,7 @@
     "spriteattachment.stageSelected": "Выбрана сцена: блоков нет",
     "spriteattachment.attachToSprite": "привязаться к [SPRITE]",
     "spriteattachment.attachToCreator": "привязаться к создателю",
+    "spriteattachment.goToCreator": "перейти к создателю",
     "spriteattachment.detach": "отвязаться",
     "spriteattachment.detachChildren": "отвязать всех ведомых",
     "spriteattachment.isAttached": "привязан?",
@@ -331,6 +332,15 @@
             filter: [TargetType.SPRITE],
           },
           {
+            opcode: "goToCreator",
+            blockType: Scratch.BlockType.COMMAND,
+            text: translate(
+              "spriteattachment.goToCreator",
+              "go to creator"
+            ),
+            filter: [TargetType.SPRITE],
+          },
+          {
             opcode: "detach",
             blockType: Scratch.BlockType.COMMAND,
             text: translate("spriteattachment.detach", "detach"),
@@ -376,6 +386,13 @@
 
     attachToCreator(args, util) {
       attachTarget(util.target, util.target && util.target[CREATOR]);
+    }
+
+    goToCreator(args, util) {
+      const target = util.target;
+      const creator = target && target[CREATOR];
+      if (!creator || !runtime.targets.includes(creator)) return;
+      target.setXY(creator.x, creator.y);
     }
 
     detach(args, util) {
